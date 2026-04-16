@@ -1,0 +1,24 @@
+[package]
+name = "aibenchlab-verify"
+version = "1.0.0"
+edition = "2021"
+description = "Standalone integrity verifier for AiBenchLab MBX v2 files"
+license = "MIT"
+repository = "https://github.com/AiBenchLab/aibenchlab-verify"
+readme = "README.md"
+keywords = ["benchmark", "verification", "integrity", "sha256"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "aibenchlab-verify"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+
+[profile.release]
+lto = true
+strip = true
+opt-level = "z"
