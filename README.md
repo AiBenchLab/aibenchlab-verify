@@ -8,9 +8,9 @@ This tool recomputes the SHA-256 content hash of an MBX file and compares it to 
 
 ## How it works
 
-This tool implements Section 6 (Verification Procedure) of the [MBX v2 Specification](MBX_V2_SPECIFICATION.md):
+This tool implements Section 6 (Verification Procedure) of the [MBX v2 Specification](../docs_manual/MBX_V2_SPECIFICATION.md):
 
-1. Parse the `.mbx` file as JSON (legacy `.mbx.json` also accepted)
+1. Parse the `.mbx` file as JSON
 2. Verify the format identifier (`AiBenchLab-MBX`) and version (`2.0`)
 3. Save the stored `content_hash`, then set it to `""`
 4. Normalize all JSON numbers to 6-decimal-place strings (e.g., `42` becomes `"42.000000"`)
