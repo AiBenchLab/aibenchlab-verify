@@ -8,9 +8,9 @@ This tool recomputes the SHA-256 content hash of an MBX file and compares it to 
 
 ## How it works
 
-This tool implements Section 6 (Verification Procedure) of the [MBX v2 Specification](../docs_manual/MBX_V2_SPECIFICATION.md):
+This tool implements Section 6 (Verification Procedure) of the [MBX v2 Specification](MBX_V2_SPECIFICATION.md):
 
-1. Parse the `.mbx.json` file as JSON
+1. Parse the `.mbx` file as JSON (legacy `.mbx.json` also accepted)
 2. Verify the format identifier (`AiBenchLab-MBX`) and version (`2.0`)
 3. Save the stored `content_hash`, then set it to `""`
 4. Normalize all JSON numbers to 6-decimal-place strings (e.g., `42` becomes `"42.000000"`)
@@ -50,13 +50,13 @@ cargo build --release --target x86_64-pc-windows-msvc
 ### Verify a single file
 
 ```bash
-aibenchlab-verify benchmark.mbx.json
+aibenchlab-verify benchmark.mbx
 ```
 
 Output on success:
 
 ```
-VERIFIED: benchmark.mbx.json
+VERIFIED: benchmark.mbx
    Hash: a1b2c3d4e5f6...
    Session: "My Benchmark Run"
    Models: llama3.1:8b, mistral:7b
@@ -68,7 +68,7 @@ VERIFIED: benchmark.mbx.json
 Output on failure:
 
 ```
-FAILED: benchmark.mbx.json
+FAILED: benchmark.mbx
    Stored hash:   a1b2c3d4e5f6...
    Computed hash:  x9y8z7w6v5u4...
    Data has been modified since export.
@@ -77,7 +77,7 @@ FAILED: benchmark.mbx.json
 ### Verbose mode
 
 ```bash
-aibenchlab-verify --verbose benchmark.mbx.json
+aibenchlab-verify --verbose benchmark.mbx
 ```
 
 Shows everything from default mode plus hardware details, benchmark configuration, score distribution, anomaly count, and session duration.
@@ -88,7 +88,7 @@ Shows everything from default mode plus hardware details, benchmark configuratio
 aibenchlab-verify --batch ./exports/
 ```
 
-Verifies all `.mbx.json` files in the directory and prints a summary:
+Verifies all `.mbx` and legacy `.mbx.json` files in the directory and prints a summary:
 
 ```
 Results: 12 verified, 1 failed, 0 errors

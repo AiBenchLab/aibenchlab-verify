@@ -17,10 +17,10 @@ use std::process;
 #[derive(Parser)]
 #[command(name = "aibenchlab-verify", version, about)]
 struct Cli {
-    /// Path to an .mbx.json file, or a directory when used with --batch
+    /// Path to an .mbx file (or legacy .mbx.json), or a directory when used with --batch
     path: PathBuf,
 
-    /// Verify all .mbx.json files in the given directory
+    /// Verify all .mbx and .mbx.json files in the given directory
     #[arg(long)]
     batch: bool,
 
@@ -88,8 +88,10 @@ fn run_batch(dir: &Path, verbose: bool) -> i32 {
             .filter_map(|e| e.ok())
             .map(|e| e.path())
             .filter(|p| {
-                p.extension().map_or(false, |ext| ext == "json")
-                    && p.to_string_lossy().ends_with(".mbx.json")
+                // Accept both .mbx (v1.0.1+) and legacy .mbx.json (v1.0.0)
+                let path_str = p.to_string_lossy();
+                p.extension().map_or(false, |ext| ext == "mbx")
+                    || path_str.ends_with(".mbx.json")
             })
             .collect(),
         Err(e) => {
@@ -99,7 +101,7 @@ fn run_batch(dir: &Path, verbose: bool) -> i32 {
     };
 
     if entries.is_empty() {
-        println!("No .mbx.json files found in {}", dir.display());
+        println!("No .mbx or .mbx.json files found in {}", dir.display());
         return 0;
     }
 
@@ -942,12 +944,12 @@ mod tests {
         let _ = std::fs::remove_dir_all(&dir);
         std::fs::create_dir_all(&dir).unwrap();
 
-        // Write 2 valid files
+        // Write 2 valid files (one .mbx, one legacy .mbx.json)
         let valid = build_test_mbx();
-        std::fs::write(dir.join("good1.mbx.json"), &valid).unwrap();
+        std::fs::write(dir.join("good1.mbx"), &valid).unwrap();
         std::fs::write(dir.join("good2.mbx.json"), &valid).unwrap();
 
-        // Write 1 tampered file
+        // Write 1 tampered file (using legacy extension to test backward compat)
         let tampered = valid.replace("85.5", "99.9");
         std::fs::write(dir.join("bad.mbx.json"), &tampered).unwrap();
 

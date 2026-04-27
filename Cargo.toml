@@ -1,6 +1,6 @@
 [package]
 name = "aibenchlab-verify"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 description = "Standalone integrity verifier for AiBenchLab MBX v2 files"
 license = "MIT"
