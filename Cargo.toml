@@ -1,6 +1,6 @@
 [package]
 name = "aibenchlab-verify"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 description = "Standalone integrity verifier for AiBenchLab MBX v2 files"
 license = "MIT"
@@ -15,7 +15,7 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
-serde_json = "1.0"
+serde_json = { version = "1.0", features = ["preserve_order"] }
 sha2 = "0.10"
 
 [profile.release]
